@@ -1,0 +1,37 @@
+# Whole stack on one machine: Postgres, the API (fills the database on start) and the web app.
+#   docker compose up --build
+# Then open http://localhost:5173
+
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ghostwake
+      POSTGRES_PASSWORD: ghostwake
+      POSTGRES_DB: ghostwake
+    ports: ["5432:5432"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ghostwake"]
+      interval: 3s
+      retries: 20
+
+  api:
+    build: ./backend
+    environment:
+      GW_DATABASE_URL: postgresql+psycopg://ghostwake:ghostwake@db:5432/ghostwake
+      GW_ANALYST_TOKEN: local-dev-token
+      GW_CORS_ORIGINS: http://localhost:5173
+    ports: ["8000:8000"]
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    image: node:20-slim
+    working_dir: /app
+    volumes: ["./web:/app"]
+    command: sh -c "npm ci && npx vite --host 0.0.0.0 --port 5173"
+    environment:
+      VITE_API_URL: http://localhost:8000
+    ports: ["5173:5173"]
+    depends_on: [api]

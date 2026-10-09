@@ -1,0 +1,25 @@
+name: Refresh data
+
+# Runs the pipeline against the production database every morning (IST) and on demand.
+# Needs one repository secret: GW_DATABASE_URL (the Neon connection string).
+on:
+  schedule:
+    - cron: "17 0 * * *"   # 05:47 IST
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install .
+      - run: python -m ghostwake.pipeline
+        env:
+          GW_DATABASE_URL: ${{ secrets.GW_DATABASE_URL }}

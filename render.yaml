@@ -1,0 +1,26 @@
+# Render Blueprint: New > Blueprint > pick this repo. Fill the secrets it asks for.
+services:
+  - type: web
+    name: ghostwake-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install .
+    # Fill (or refresh) the data, then serve. Idempotent, so every deploy is safe.
+    startCommand: python -m ghostwake.pipeline && uvicorn ghostwake.api.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: GW_DATABASE_URL
+        sync: false
+      - key: GW_ANALYST_TOKEN
+        generateValue: true
+      - key: GW_CORS_ORIGINS
+        sync: false
+      - key: GW_LLM_BASE_URL
+        sync: false
+      - key: GW_LLM_API_KEY
+        sync: false
+      - key: GW_LLM_MODEL
+        sync: false

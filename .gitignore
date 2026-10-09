@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+*.db
+
+# Node
+node_modules/
+web/dist/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# ML runs
+runs/
+data/
+*.tsbuildinfo
