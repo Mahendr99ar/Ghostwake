@@ -186,5 +186,4 @@ Public and synthetic data only. No imagery or analysis of military sites. The sy
 ## Further reading in this repo
 
 - [DEPLOY.md](DEPLOY.md): putting your own copy online for free
-- [STUDY_GUIDE.md](STUDY_GUIDE.md): a three-week walk through the code, in the order the data flows
 - [docs/adr](docs/adr): why things are built the way they are
