@@ -385,7 +385,7 @@ button { cursor: pointer; }
 .maplibregl-ctrl button .maplibregl-ctrl-icon { filter: var(--ctrl-icon); }
 .maplibregl-ctrl-attrib { background: color-mix(in srgb, var(--abyss) 80%, transparent) !important; color: var(--paper-dim); }
 .maplibregl-ctrl-attrib a { color: var(--paper-dim); }
-.maplibregl-ctrl-bottom-right { bottom: 90px; }
+.maplibregl-ctrl-bottom-right { bottom: 104px; }
 
 /* ---------------------------------------------------------------- small screens */
 

@@ -110,7 +110,9 @@ export function MapView({ tracks, t0, detections, alerts, zones, selected, ghost
       style: styleFor(c),
       center: [78.6, 8.4],
       zoom: 6.6,
-      attributionControl: { compact: true, customAttribution: "OpenFreeMap © OpenMapTiles © OpenStreetMap" },
+      // The basemap's own TileJSON already carries the OpenFreeMap / OpenStreetMap credit,
+      // so we don't add our own copy of it.
+      attributionControl: { compact: true },
       dragRotate: false,
     });
     m.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
@@ -130,6 +132,10 @@ export function MapView({ tracks, t0, detections, alerts, zones, selected, ghost
     m.on("styledata", () => {
       ready.current = true;
       geo.current();
+    });
+    // Keep the credit folded into its (i) button so it never sits on top of the timeline.
+    m.once("load", () => {
+      box.current?.querySelector(".maplibregl-ctrl-attrib")?.classList.remove("maplibregl-compact-show");
     });
     // The map lives in a panel that can be hidden on phones; follow its real size.
     const ro = new ResizeObserver(() => m.resize());
